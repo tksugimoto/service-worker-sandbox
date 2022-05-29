@@ -1,0 +1,29 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<title>test title</title>
+	<link rel="manifest" href="manifest.json">
+	<style>
+		body {
+			max-width: 1200px;
+			margin-right: auto;
+			margin-left: auto;
+		}
+	</style>
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js').then(registration => {
+				console.log('navigator.serviceWorker.register 成功', registration);
+			}).catch(err => {
+				console.log('navigator.serviceWorker.register 失敗', err);
+			});
+		}
+	</script>
+</head>
+<body>
+<p>
+	aaaaaaaaaaaaa
+</p>
+</body>

@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  httpd:
+    image: httpd:2.4
+    restart: always
+    volumes:
+      - ./src/:/usr/local/apache2/htdocs/
+    ports:
+      - "${HTTPD_SERVER_BIND_IP_PORT:-127.0.0.1:80}:80"
+    environment:
+      TZ:

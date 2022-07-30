@@ -23,7 +23,19 @@
 	</script>
 </head>
 <body>
-<p>
-	aaaaaaaaaaaaa
-</p>
+<h2>url param's key&value</h2>
+<script>
+{
+	const url = new URL(document.URL);
+	const dl = document.createElement('dl');
+	[...url.searchParams.entries()].forEach(([key, value]) => {
+		const dt = document.createElement('dt');
+		dt.append(key);
+		const dd = document.createElement('dd');
+		dd.append(value);
+		dl.append(dt, dd);
+	});
+	document.body.append(dl);
+}
+</script>
 </body>

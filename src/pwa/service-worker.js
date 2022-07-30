@@ -1,10 +1,11 @@
-const CACHE_VERSION = 'v1';
+const CACHE_VERSION = '2022/07/31-16:00';
 const CACHE_NAME_SEPARATOR = ' '; // path 中の 半角スペース は url encode されるため混同される可能性がない
 const CACHE_NAME = `${self.registration.scope}${CACHE_NAME_SEPARATOR}${CACHE_VERSION}`;
 
 const urlsToCache = [
 	'./',
 	'./index.html',
+	'./share_target.html',
 ];
 
 self.addEventListener('install', event => {
@@ -37,7 +38,9 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
 	console.log(self.registration.scope, CACHE_VERSION, 'fetch', event.request.url, event);
 	const responsePromise = caches.open(CACHE_NAME).then(cache => {
-		return cache.match(event.request).then(cacheResponse => {
+		return cache.match(event.request, {
+			ignoreSearch: true,
+		}).then(cacheResponse => {
 			if (cacheResponse) {
 				console.log(self.registration.scope, CACHE_VERSION, 'caches.match', event.request.url, cacheResponse);
 				return cacheResponse;

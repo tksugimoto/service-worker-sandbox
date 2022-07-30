@@ -1,0 +1,83 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Share Page</title>
+	<link rel="manifest" href="manifest.json">
+	<style>
+		li {
+			padding: 10px 0;
+		}
+		button {
+			cursor: pointer;
+			padding: 10px;
+		}
+	</style>
+	<script>
+		if ('serviceWorker' in navigator) {
+			navigator.serviceWorker.register('service-worker.js');
+		}
+	</script>
+</head>
+<body>
+<h2>Share Page</h2>
+<dl id="dl"></dl>
+<ul id="share-buttons"></ul>
+<script>
+{
+	const searchParams = new URL(document.URL).searchParams;
+	const title = searchParams.get('title');
+	const text = searchParams.get('text');
+	const url = searchParams.get('url');
+	const dl = document.getElementById('dl');
+	Object.entries({
+		title,
+		text,
+		url,
+	}).forEach(([key, value]) => {
+		const dt = document.createElement('dt');
+		dt.append(key);
+		const dd = document.createElement('dd');
+		dd.append(value);
+		dl.append(dt, dd);
+	});
+
+	const shareButtons = document.getElementById('share-buttons');
+	[{
+		name: 'Google カレンダーに登録',
+		callback: () => {
+			const params = new URLSearchParams({
+				action: 'TEMPLATE',
+				text: title,
+				details: [text, url].filter(Boolean).join('\n'),
+			});
+			window.open(`http://www.google.com/calendar/event?${params.toString()}`);
+		},
+	}, {
+		name: '別アプリに共有',
+		callback: () => {
+			navigator.share({
+				text: [title, text, url].filter(Boolean).join('\n'),
+			});
+		},
+	}, {
+		name: `タイトル で Google検索: ${title}`,
+		callback: () => {
+			const params = new URLSearchParams({
+				q: title,
+			});
+			window.open(`https://www.google.com/search?${params.toString()}`);
+		},
+	}].forEach(({name, callback}) => {
+		const li = document.createElement('li');
+		const button = document.createElement('button');
+		button.innerText = name;
+		button.addEventListener('click', callback);
+		li.append(button);
+		shareButtons.append(li);
+	});
+}
+</script>
+</body>

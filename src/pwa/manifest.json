@@ -3,7 +3,7 @@
 	"start_url": "index.html",
 	"display": "standalone",
 	"share_target": {
-		"action": "/index.html",
+		"action": "index.html",
 		"method": "GET",
 		"enctype": "application/x-www-form-urlencoded",
 		"params": {
